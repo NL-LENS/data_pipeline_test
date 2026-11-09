@@ -24,7 +24,7 @@ BRONZE_DIR     ?= $(LAKE_DIR)/bronze
 SILVER_DIR     ?= $(LAKE_DIR)/silver
 STAMP_DIR      ?= $(LAKE_DIR)/.stamps
 
-BRONZE_SOURCES ?= INPA SPOLIS GBAADRESOBJECTBUS VSLGWBTAB
+BRONZE_SOURCES ?= INPA SPOLIS GBAADRESOBJECTBUS VSLGWBTAB GBAPERSOONTAB
 
 # lens matches --source_regex against source_filename, not source_path.
 BRONZE_INPA_REGEX              := INPA
@@ -36,6 +36,10 @@ BRONZE_GBAADRESOBJECTBUS_PERIOD := 2025 2025
 # Use VSLGWB2026 so the regex does not also match NIETVSLGWBTAB202603.
 BRONZE_VSLGWBTAB_REGEX         := VSLGWB2026
 BRONZE_VSLGWBTAB_PERIOD        := 2026 2026
+# Only the latest reference year is needed. The filename regex excludes
+# VRLGBAPERSOONTAB and GBAPERSOONLTAB.
+BRONZE_GBAPERSOONTAB_REGEX     := GBAPERSOON2025
+BRONZE_GBAPERSOONTAB_PERIOD    := 2025 2025
 
 # NCOBRINVO is not present in data/source yet. Add its regex and period
 # here once the source file is available, and add NCOBRINVO to BRONZE_SOURCES.

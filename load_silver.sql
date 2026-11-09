@@ -13,5 +13,8 @@ SELECT * FROM read_parquet('data/lake/silver/EVENT=JOB_END/*.parquet');
 CREATE OR REPLACE TABLE gba AS
 SELECT * FROM read_parquet('data/lake/silver/EVENT=GBA_ADDRESS/*.parquet');
 
+CREATE OR REPLACE TABLE gba_person AS
+SELECT * FROM read_parquet('data/lake/silver/EVENT=GBA_PERSON/*.parquet');
+
 CREATE OR REPLACE TABLE vslgwb AS
 SELECT * FROM read_parquet('data/lake/silver/EVENT=VSLGWB_MUNICIPALITY/*.parquet');

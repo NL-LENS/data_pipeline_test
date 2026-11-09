@@ -77,6 +77,17 @@ def main():
                 event_time_col_fmt="%Y%m%d",
             ),
         ),
+        "GBA_PERSON": (
+            "GBAPERSOONTAB",
+            SilverConfig(
+                primary_key={"person": "RINPERSOON"},
+                filter_col={"RINPERSOONS": "R"},
+                time_cols=[],
+                secondary_keys=None,
+                event_time_col=None,
+                apply_event_time="01-01",
+            ),
+        ),
         "VSLGWB_MUNICIPALITY": (
             "VSLGWBTAB",
             SilverConfig(

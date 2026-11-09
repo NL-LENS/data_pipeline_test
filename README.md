@@ -16,7 +16,7 @@ make build   # build bronze and silver
 
 This writes:
 
-- bronze: `data/lake/bronze/{inpa,spolis,gbaadresobjectbus,vslgwbtab}`
+- bronze: `data/lake/bronze/{inpa,spolis,gbaadresobjectbus,vslgwbtab,gbapersoontab}`
 - silver: `data/lake/silver/EVENT=...`
 
 Build one layer at a time:

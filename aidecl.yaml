@@ -1,0 +1,25 @@
+# AI Declaration Format (aidecl)
+# Use a role or team name rather than personal name if this file will be public
+
+schema_version: 1.0.0
+project:
+  name: data_pipeline_test
+  repository: https://github.com/YOUR-ORG/YOUR-REPO
+  content_type: software
+ai_usage:
+  used: true
+  summary: To generate all scripts in this repository.
+  level: extensive
+  code_proportion:
+    ai_generated_percent: 100
+  tools:
+  - name: Deepseek V4.1 Flash
+    vendor: Opencode
+    type: agent
+    purpose:
+    - code generation
+  scope:
+    code_completion: true
+declaration:
+  date: '2026-11-09'
+  declared_by: NL-LENS team member

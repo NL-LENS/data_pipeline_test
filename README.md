@@ -16,8 +16,9 @@ make build   # build bronze and silver
 
 This writes:
 
-- bronze: `data/lake/bronze/{inpa,spolis,gbaadresobjectbus,vslgwbtab,gbapersoontab}`
-- silver: `data/lake/silver/EVENT=...`
+- bronze: `data/lake/bronze/{inpa,spolis,gbaadresobjectbus,vslgwbtab,gbapersoontab,kindoudertab}`
+- silver: `data/lake/silver/{EVENT_NAME}/` (the event name is also stored in
+  the `EVENT` column; no Hive partitioning is used)
 
 Build one layer at a time:
 
@@ -77,9 +78,9 @@ Then, in an interactive duckdb shell,
 or alternatively:
 
 ```sql
-create table INPA as SELECT * FROM read_parquet('data/lake/silver/EVENT=INPA/');
-create table JOB_START as SELECT * FROM read_parquet('data/lake/silver/EVENT=JOB_START/');
-create table JOB_END as SELECT * FROM read_parquet('data/lake/silver/EVENT=JOB_END/');
+create table INPA as SELECT * FROM read_parquet('data/lake/silver/INPA/');
+create table JOB_START as SELECT * FROM read_parquet('data/lake/silver/JOB_START/');
+create table JOB_END as SELECT * FROM read_parquet('data/lake/silver/JOB_END/');
 select min(DATE) from INPA;
 select max(DATE) from INPA;
 select min(DATE) from JOB_START;

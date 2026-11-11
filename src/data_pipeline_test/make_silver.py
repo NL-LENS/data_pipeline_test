@@ -21,11 +21,9 @@ def main():
             "INPA",
             SilverConfig(
                 primary_key={"person": "RINPERSOON"},
+                event_name="INPA",
                 filter_col={"RINPERSOONS": "R"},
-                time_cols=[],
                 drop_cols=["RINPERSOONHKW"],
-                secondary_keys=None,
-                event_time_col=None,
                 apply_event_time="01-01",
             ),
         ),
@@ -33,6 +31,7 @@ def main():
             "SPOLIS",
             SilverConfig(
                 primary_key={"person": "RINPERSOON"},
+                event_name="JOB_START",
                 filter_col={"RINPERSOONS": "R"},
                 time_cols=[
                     "SDATUMAANVANGIKO",
@@ -50,6 +49,7 @@ def main():
             "SPOLIS",
             SilverConfig(
                 primary_key={"person": "RINPERSOON"},
+                event_name="JOB_END",
                 filter_col={"RINPERSOONS": "R"},
                 time_cols=[
                     "SDATUMAANVANGIKO",
@@ -67,6 +67,7 @@ def main():
             "GBAADRESOBJECTBUS",
             SilverConfig(
                 primary_key={"person": "RINPERSOON"},
+                event_name="GBA_ADDRESS",
                 filter_col={"RINPERSOONS": "R"},
                 time_cols=[
                     "GBADATUMAANVANGADRESHOUDING",
@@ -81,10 +82,25 @@ def main():
             "GBAPERSOONTAB",
             SilverConfig(
                 primary_key={"person": "RINPERSOON"},
+                event_name="GBA_PERSON",
                 filter_col={"RINPERSOONS": "R"},
-                time_cols=[],
-                secondary_keys=None,
-                event_time_col=None,
+                apply_event_time="01-01",
+            ),
+        ),
+        # KINDOUDERTAB links a child to the legal father and mother.
+        # Keeping the parent pointers as secondary keys (rather than NOTE)
+        # preserves the numeric parent IDs; as NOTE attributes they would be
+        # classified as continuous and cast to FLOAT, losing leading zeros.
+        "KINDOUDER": (
+            "KINDOUDERTAB",
+            SilverConfig(
+                primary_key={"person": "RINPERSOON"},
+                event_name="KINDOUDER",
+                filter_col={"RINPERSOONS": "R"},
+                secondary_keys={
+                    "father": ["RINPERSOONSPA", "RINPERSOONPA"],
+                    "mother": ["RINPERSOONSMA", "RINPERSOONMA"],
+                },
                 apply_event_time="01-01",
             ),
         ),
@@ -92,11 +108,8 @@ def main():
             "VSLGWBTAB",
             SilverConfig(
                 primary_key={"dwelling": ["SOORTOBJECTNUMMER", "RINOBJECTNUMMER"]},
-                filter_col=None,
-                time_cols=[],
-                drop_cols=None,
+                event_name="VSLGWB_MUNICIPALITY",
                 secondary_keys={"municipality": "GEM2026"},
-                event_time_col=None,
                 apply_event_time="01-01",
             ),
         ),
@@ -129,15 +142,15 @@ def main():
             datasets_to_process = con.execute(sql, (regex_param,)).fetchall()
             for source_path, source_filename, ref_period in tqdm(datasets_to_process, desc=f"Creating {event}"):
                 year = ref_period.year
-                dest_path = silver_dir / f"EVENT={event}" / f"{year}.parquet"
+                dest_path = silver_dir / config.event_name / f"{year}.parquet"
                 dest_path.parent.mkdir(parents=True, exist_ok=True)
                 silver_meta = convert_to_silver(
-                        source_manifest=source_manifest,
-                        source_path=Path(source_path),
-                        source_filename=Path(source_filename),
-                        dest_path=dest_path,
-                        config=config
-                    )
+                    source_manifest=source_manifest,
+                    source_path=Path(source_path),
+                    source_filename=Path(source_filename),
+                    dest_path=dest_path,
+                    config=config,
+                )
 
 if __name__ == "__main__":
     main()

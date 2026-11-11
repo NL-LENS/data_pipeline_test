@@ -14,7 +14,7 @@ wheels = [
 [[package]]
 name = "data-pipeline"
 version = "0.0.1"
-source = { git = "https://github.com/NL-LENS/data-pipeline?branch=entity-identifiers#2be2c7d4d789b5761395016c8d6fb61dc34ae9de" }
+source = { git = "https://github.com/NL-LENS/data-pipeline?branch=entity-identifiers#6080a25e843ab381b166f14da149b4d2999c81e5" }
 dependencies = [
     { name = "duckdb" },
     { name = "numpy" },
